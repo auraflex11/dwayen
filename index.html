@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dwayne Flex - Premium Market</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #000;
+      overflow-y: scroll;
+      min-height: 100vh;
+      color: #fff;
+      scroll-behavior: smooth;
+      transition: all 0.3s ease;
+    }
+
+    /* Dynamic network background */
+    .network-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(circle at 20% 30%, rgba(0, 40, 60, 0.3) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 70%, rgba(255, 28, 61, 0.2) 0%, transparent 50%);
+    }
+    
+    .network-bg canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Header styling */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 200, 255, 0.2);
+    }
+
+    .logo {
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .logo-red {
+      color: #ff1c3d;
+      font-weight: 900;
+    }
+
+    .logo-white {
+      color: #ffffff;
+      font-weight: 900;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .support-link {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 16px;
+      transition: color 0.3s;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .support-link:hover {
+      color: #00c8ff;
+      background: rgba(0, 200, 255, 0.1);
+    }
+
+    /* Language Switcher */
+    .language-switcher {
+      position: relative;
+      display: inline-block;
+    }
+
+    .language-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+
+    .language-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: #00c8ff;
+    }
+
+    .language-flag {
+      font-size: 16px;
+    }
+
+    .language-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: rgba(0, 0, 0, 0.95);
+      border: 1px solid rgba(0, 200, 255, 0.3);
+      border-radius: 6px;
+      min-width: 150px;
+      z-index: 101;
+      margin-top: 5px;
+      backdrop-filter: blur(10px);
+    }
+
+    .language-dropdown.show {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .language-option {
+      padding: 12px 15px;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.3s;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .language-option:last-child {
+      border-bottom: none;
+    }
+
+    .language-option:hover {
+      background: rgba(0, 200, 255, 0.2);
+      color: #00c8ff;
+    }
+
+    .language-option.active {
+      background: rgba(0, 200, 255, 0.3);
+      color: #00c8ff;
+      font-weight: 600;
+    }
+
+    .connect-btn {
+      padding: 10px 25px;
+      background: linear-gradient(45deg, #00c8ff, #0088cc);
+      border: none;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #fff;
+      text-decoration: none;
+      font-size: 15px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 200, 255, 0.3);
+    }
+
+    .connect-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 200, 255, 0.5);
+      background: linear-gradient(45deg, #00d9ff, #0099dd);
+    }
+
+    /* Hero section */
+    .hero {
+      text-align: center;
+      margin-top: 60px;
+      padding: 40px 20px;
+    }
+
+    .premium-badge {
+      display: inline-block;
+      padding: 8px 25px;
+      background: linear-gradient(45deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+      border-radius: 25px;
+      font-size: 15px;
+      border: 1px solid rgba(255,255,255,0.25);
+      letter-spacing: 1px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(5px);
+    }
+
+    .main-title {
+      font-size: 72px;
+      margin-top: 30px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      line-height: 1.1;
+      direction: ltr;
+      text-align: center;
+    }
+
+    .subtitle {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 20px;
+      color: #ddd;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .crypto-text {
+      margin-top: 25px;
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: #00c8ff;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .crypto-text::before, .crypto-text::after {
+      content: "•";
+      color: rgba(0, 200, 255, 0.5);
+      font-size: 18px;
+    }
+
+    /* Products */
+    .products {
+      margin: 40px auto;
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+      padding: 20px;
+    }
+
+    .item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 25px 20px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.4s;
+      backdrop-filter: blur(5px);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 240px;
+      justify-content: center;
+    }
+
+    .item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #ff1c3d, #00c8ff);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .item:hover {
+      transform: translateY(-8px);
+      border-color: rgba(0, 200, 255, 0.4);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .item:hover::before {
+      opacity: 1;
+    }
+
+    .item-icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+      color: #00c8ff;
+    }
+
+    .item-title {
+      font-weight: 700;
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .item-desc {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      padding: 0 10px;
+    }
+
+    .item-price {
+      color: #ffcc00;
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 15px;
+      background: rgba(255, 204, 0, 0.1);
+      padding: 5px 15px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    .item-custom {
+      color: #00c8ff;
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 15px;
+      background: rgba(0, 200, 255, 0.1);
+      padding: 5px 15px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    .item-btn {
+      background: rgba(0, 200, 255, 0.1);
+      border: 1px solid rgba(0, 200, 255, 0.4);
+      color: #00c8ff;
+      padding: 12px 25px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+      font-size: 15px;
+      margin-top: auto;
+    }
+
+    .item-btn:hover {
+      background: rgba(0, 200, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 80px;
+      text-align: center;
+      padding: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #888;
+      font-size: 14px;
+    }
+
+    /* Support Page */
+    .support-page {
+      display: none;
+      max-width: 1000px;
+      margin: 50px auto;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .support-title {
+      color: #00c8ff;
+      font-size: 32px;
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+
+    .support-subtitle {
+      color: #ccc;
+      font-size: 18px;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    /* Choose Seller Page */
+    .choose-seller-page {
+      display: none;
+      max-width: 1100px;
+      margin: 50px auto;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .choose-seller-title {
+      color: #00c8ff;
+      font-size: 32px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .choose-service-info {
+      color: #ffcc00;
+      font-size: 20px;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+
+    .seller-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .seller-option {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .seller-option:hover {
+      transform: translateY(-5px);
+      border-color: #00c8ff;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .seller-option-icon {
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+
+    .seller-option.dwayne .seller-option-icon {
+      color: #ff1c3d;
+    }
+
+    .seller-option.aura .seller-option-icon {
+      color: #9d00ff;
+    }
+
+    .seller-option.kaneki .seller-option-icon {
+      color: #00c8ff;
+    }
+
+    .seller-option-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    .seller-option-desc {
+      color: #aaa;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .seller-option-btn {
+      display: inline-block;
+      padding: 12px 25px;
+      background: rgba(0, 200, 255, 0.1);
+      color: #00c8ff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: 1px solid rgba(0, 200, 255, 0.3);
+      cursor: pointer;
+    }
+
+    .seller-option-btn:hover {
+      background: rgba(0, 200, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 12px 30px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Audio Player */
+    .audio-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 99;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 50px;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 200, 255, 0.3);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .audio-btn {
+      background: transparent;
+      border: none;
+      color: #00c8ff;
+      font-size: 20px;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .audio-btn:hover {
+      background: rgba(0, 200, 255, 0.1);
+    }
+
+    .audio-info {
+      color: #ccc;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .seller-options {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+      }
+      
+      .main-title {
+        font-size: 48px;
+      }
+      
+      .products {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
+      
+      .item-title {
+        font-size: 18px;
+      }
+      
+      .seller-options {
+        grid-template-columns: 1fr;
+      }
+      
+      .header-right {
+        gap: 10px;
+      }
+      
+      .language-btn span:not(.language-flag) {
+        display: none;
+      }
+      
+      .language-btn {
+        padding: 8px 10px;
+      }
+      
+      .item {
+        height: 250px;
+      }
+      
+      .audio-player {
+        bottom: 10px;
+        right: 10px;
+        padding: 8px 12px;
+      }
+      
+      .audio-info {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .products {
+        grid-template-columns: 1fr;
+      }
+      
+      .main-title {
+        font-size: 36px;
+      }
+      
+      .header-right {
+        gap: 8px;
+      }
+      
+      .connect-btn {
+        padding: 8px 15px;
+        font-size: 14px;
+      }
+      
+      .support-page, .choose-seller-page {
+        padding: 20px;
+      }
+      
+      .support-link {
+        font-size: 14px;
+        padding: 6px 8px;
+      }
+      
+      .item {
+        height: 260px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Audio Player -->
+  <div class="audio-player" id="audioPlayer">
+    <button class="audio-btn" id="playBtn">
+      <i class="fas fa-play"></i>
+    </button>
+    <button class="audio-btn" id="pauseBtn" style="display: none;">
+      <i class="fas fa-pause"></i>
+    </button>
+    <button class="audio-btn" id="volumeBtn">
+      <i class="fas fa-volume-up"></i>
+    </button>
+    <div class="audio-info" id="audioInfo">♪ موسيقى خلفية ♪</div>
+  </div>
+  
+  <audio id="backgroundMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+    <source src="song.ogg" type="audio/ogg">
+    متصفحك لا يدعم تشغيل الصوت.
+  </audio>
+
+  <div class="network-bg">
+    <canvas id="net"></canvas>
+  </div>
+
+  <!-- Main Page -->
+  <div id="mainPage">
+    <header>
+      <div class="logo">
+        <span class="logo-white">Dwayne</span><span class="logo-red">Flex</span>
+      </div>
+      
+      <div class="header-right">
+        <a class="support-link" id="supportBtn"></a>
+        
+        <div class="language-switcher">
+          <button class="language-btn" id="languageBtn">
+            <span class="language-flag">🇸🇦</span>
+            <span id="currentLanguage">العربية</span>
+            <i class="fas fa-chevron-down" style="font-size: 12px;"></i>
+          </button>
+          <div class="language-dropdown" id="languageDropdown">
+            <div class="language-option active" data-lang="ar" data-flag="🇸🇦">
+              <span class="language-flag">🇸🇦</span>
+              <span>العربية</span>
+            </div>
+            <div class="language-option" data-lang="en" data-flag="🇺🇸">
+              <span class="language-flag">🇺🇸</span>
+              <span>English</span>
+            </div>
+            <div class="language-option" data-lang="es" data-flag="🇪🇸">
+              <span class="language-flag">🇪🇸</span>
+              <span>Español</span>
+            </div>
+          </div>
+        </div>
+        
+        <a href="https://t.me/m_0_h_a1" class="connect-btn" id="connectBtn"></a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="premium-badge" id="premiumBadge">★ سوق بريميوم</div>
+      
+      <h1 class="main-title">
+        <span class="logo-white">Dwayne</span><span class="logo-red">Flex</span>
+      </h1>
+      
+      <p class="subtitle" id="mainSubtitle">
+        هذا هو أفضل مكان لتحقيق هدفك، نوفر لك أفضل الخدمات والأدوات الاحترافية بجودة عالية
+      </p>
+      
+      <p class="crypto-text" id="cryptoText">نقبل جميع العملات المشفرة بنسبة 100%</p>
+    </section>
+
+    <div class="products">
+      <!-- Combo Making -->
+      <div class="item">
+        <div class="item-icon"><i class="fas fa-cogs"></i></div>
+        <div class="item-title" data-ar="Combo Making" data-en="Combo Making" data-es="Combo Making">Combo Making</div>
+        <div class="item-price" data-ar="15 دولار" data-en="$15" data-es="$15">15 دولار</div>
+        <div class="item-desc" data-ar="خدمة صنع كومبو احترافية مع جودة عالية" data-en="Professional combo making service with high quality" data-es="Servicio profesional de creación de combos con alta calidad">خدمة صنع كومبو احترافية مع جودة عالية</div>
+        <button class="item-btn" data-service="Combo Making" data-price="15 دولار" id="orderBtn1"></button>
+      </div>
+      
+      <!-- UHQ Combo Making -->
+      <div class="item">
+        <div class="item-icon"><i class="fas fa-layer-group"></i></div>
+        <div class="item-title" data-ar="UHQ Combo Making" data-en="UHQ Combo Making" data-es="UHQ Combo Making">UHQ Combo Making</div>
+        <div class="item-price" data-ar="30 دولار" data-en="$30" data-es="$30">30 دولار</div>
+        <div class="item-desc" data-ar="تصنيع كومبو بجودة عالية جداً" data-en="Making combos with ultra high quality" data-es="Creación de combos de calidad ultra alta">تصنيع كومبو بجودة عالية جداً</div>
+        <button class="item-btn" data-service="UHQ Combo Making" data-price="30 دولار" id="orderBtn2"></button>
+      </div>
+      
+      <!-- Rdp Prv Passlist -->
+      <div class="item">
+        <div class="item-icon"><i class="fas fa-server"></i></div>
+        <div class="item-title" data-ar="Rdp Prv Passlist" data-en="Rdp Private Passlist" data-es="Rdp Private Passlist">Rdp Prv Passlist</div>
+        <div class="item-price" data-ar="10 دولار" data-en="$10" data-es="$10">10 دولار</div>
+        <div class="item-desc" data-ar="قوائم كلمات مرور خاصة للخوادم البعيدة" data-en="Private password lists for remote servers" data-es="Listas de contraseñas privadas para servidores remotos">قوائم كلمات مرور خاصة للخوادم البعيدة</div>
+        <button class="item-btn" data-service="Rdp Prv Passlist" data-price="10 دولار" id="orderBtn3"></button>
+      </div>
+      
+      <!-- Mix 25 -->
+      <div class="item">
+        <div class="item-icon"><i class="fas fa-random"></i></div>
+        <div class="item-title" data-ar="Mix 25" data-en="Mix 25" data-es="Mix 25">Mix 25</div>
+        <div class="item-price" data-ar="25 دولار" data-en="$25" data-es="$25">25 دولار</div>
+        <div class="item-desc" data-ar="كومبو مختلطة من مصادر متنوعة - 25 ألف" data-en="Mixed combos from various sources - 25K" data-es="Combos mixtos de varias fuentes - 25K">كومبو مختلطة من مصادر متنوعة - 25 ألف</div>
+        <button class="item-btn" data-service="Mix 25" data-price="25 دولار" id="orderBtn4"></button>
+      </div>
+      
+      <!-- Hotmail 15K -->
+      <div class="item">
+        <div class="item-icon"><i class="fas fa-envelope"></i></div>
+        <div class="item-title" data-ar="Hotmail 15K" data-en="Hotmail 15K" data-es="Hotmail 15K">Hotmail 15K</div>
+        <div class="item-price" data-ar="10 دولار" data-en="$10" data-es="$10">10 دولار</div>
+        <div class="item-desc" data-ar="كومبو هوتميل عالية الجودة - 15 ألف" data-en="High quality Hotmail combos - 15K" data-es="Combos Hotmail de alta calidad - 15K">كومبو هوتميل عالية الجودة - 15 ألف</div>
+        <button class="item-btn" data-service="Hotmail 15K" data-price="10 دولار" id="orderBtn5"></button>
+      </div>
+      
+      <!-- Gmail 20k -->
+      <div class="item">
+        <div class="item-icon"><i class="fab fa-google"></i></div>
+        <div class="item-title" data-ar="Gmail 20k" data-en="Gmail 20k" data-es="Gmail 20k">Gmail 20k</div>
+        <div class="item-price" data-ar="10 دولار" data-en="$10" data-es="$10">10 دولار</div>
+        <div class="item-desc" data-ar="كومبو جيميل حديثة - 20 ألف" data-en="Recent Gmail combos - 20K" data-es="Combos Gmail recientes - 20K">كومبو جيميل حديثة - 20 ألف</div>
+        <button class="item-btn" data-service="Gmail 20k" data-price="10 دولار" id="orderBtn6"></button>
+      </div>
+      
+      <!-- Edu 10K -->
+      <div class="item">
+        <div class="item-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="item-title" data-ar="Edu 10K" data-en="Edu 10K" data-es="Edu 10K">Edu 10K</div>
+        <div class="item-price" data-ar="10 دولار" data-en="$10" data-es="$10">10 دولار</div>
+        <div class="item-desc" data-ar="كومبو حسابات تعليمية - 10 ألف" data-en="Educational account combos - 10K" data-es="Combos de cuentas educativas - 10K">كومبو حسابات تعليمية - 10 ألف</div>
+        <button class="item-btn" data-service="Edu 10K" data-price="10 دولار" id="orderBtn7"></button>
+      </div>
+      
+      <!-- New Netflix Config -->
+      <div class="item">
+        <div class="item-icon"><i class="fas fa-film"></i></div>
+        <div class="item-title" data-ar="New Netflix Config" data-en="New Netflix Config" data-es="New Netflix Config">New Netflix Config</div>
+        <div class="item-price" data-ar="25 دولار" data-en="$25" data-es="$25">25 دولار</div>
+        <div class="item-desc" data-ar="تصنيع كونفج نتفلكس حديث" data-en="Making new Netflix config" data-es="Creación de nueva configuración de Netflix">تصنيع كونفج نتفلكس حديث</div>
+        <button class="item-btn" data-service="New Netflix Config" data-price="25 دولار" id="orderBtn8"></button>
+      </div>
+      
+      <!-- Custom Combo -->
+      <div class="item">
+        <div class="item-icon"><i class="fas fa-user-cog"></i></div>
+        <div class="item-title" data-ar="Custom Combo" data-en="Custom Combo" data-es="Custom Combo">Custom Combo</div>
+        <div class="item-custom" data-ar="علي حسب طلبك" data-en="According to your request" data-es="Según su solicitud">علي حسب طلبك</div>
+        <div class="item-desc" data-ar="كومبو مخصصة حسب طلبك" data-en="Custom combos according to your request" data-es="Combos personalizados según su solicitud">كومبو مخصصة حسب طلبك</div>
+        <button class="item-btn" data-service="Custom Combo" id="orderBtn9"></button>
+      </div>
+    </div>
+
+    <footer>
+      <p id="footerText">© 2026 Dwayne Flex. جميع الحقوق محفوظة.</p>
+      <p style="margin-top: 10px; font-size: 12px;" id="contactText">للتواصل والدعم الفني: @m_0_h_a1 على Telegram</p>
+      <p style="margin-top: 5px; font-size: 11px; color: #666;" id="disclaimerText">نحن لا نتحمل أي مسؤولية عن الاستخدام غير القانوني لأي من خدماتنا</p>
+    </footer>
+  </div>
+
+  <!-- Support Page -->
+  <div id="supportPage" class="support-page">
+    <div class="support-title" id="supportTitle">الدعم الفني</div>
+    <div class="support-subtitle" id="supportSubtitle">اختر الشخص المناسب لحل مشكلتك. هؤلاء الأشخاص فقط يمكنهم استلام رسائلك:</div>
+    
+    <div class="seller-options">
+      <div class="seller-option dwayne">
+        <div class="seller-option-icon"><i class="fas fa-user-tie"></i></div>
+        <div class="seller-option-title">Dwayne Flex</div>
+        <div class="seller-option-desc" id="supportDesc1">
+          المسؤول الرئيسي للموقع والمطور. يمكنه حل جميع المشاكل الفنية والتقنية.
+        </div>
+        <a href="https://t.me/m_0_h_a1" target="_blank" class="seller-option-btn" id="supportLink1">
+          التواصل على Telegram
+        </a>
+      </div>
+      
+      <div class="seller-option aura">
+        <div class="seller-option-icon"><i class="fas fa-code"></i></div>
+        <div class="seller-option-title">AuraFlex</div>
+        <div class="seller-option-desc" id="supportDesc2">
+          مطور ومبرمج احترافي. متخصص في حل المشاكل التقنية المعقدة وتطوير الحلول المخصصة.
+        </div>
+        <a href="https://t.me/auraflex11" target="_blank" class="seller-option-btn" id="supportLink2">
+          التواصل على Telegram
+        </a>
+      </div>
+      
+      <div class="seller-option kaneki">
+        <div class="seller-option-icon"><i class="fas fa-headset"></i></div>
+        <div class="seller-option-title">Kaneki</div>
+        <div class="seller-option-desc" id="supportDesc3">
+          ممثل الدعم الفني. يمكنه مساعدتك في مشاكل الطلبات والاستفسارات العامة.
+        </div>
+        <a href="https://t.me/Gk_cm" target="_blank" class="seller-option-btn" id="supportLink3">
+          التواصل على Telegram
+        </a>
+      </div>
+    </div>
+    
+    <a href="#" class="back-btn" id="backToMainFromSupport">العودة إلى الرئيسية</a>
+  </div>
+
+  <!-- Choose Seller Page -->
+  <div id="chooseSellerPage" class="choose-seller-page">
+    <div class="choose-seller-title" id="chooseSellerTitle">اختر البائع </div>
+    <div class="choose-service-info" id="chooseServiceInfo">خدمة: <span id="selectedServiceName"></span></div>
+    <div class="support-subtitle" id="chooseSellerSubtitle">اختر الشخص الذي تريد الشراء منه:</div>
+    
+    <div class="seller-options">
+      <div class="seller-option dwayne" id="sellerOption1">
+        <div class="seller-option-icon"><i class="fas fa-user-tie"></i></div>
+        <div class="seller-option-title">Dwayne Flex</div>
+        <div class="seller-option-desc">
+          المسؤول الرئيسي للموقع والمطور. يمكنه توفير الخدمة لك.
+        </div>
+        <button class="seller-option-btn" id="chooseSeller1">اختر هذا البائع </button>
+      </div>
+      
+      <div class="seller-option aura" id="sellerOption2">
+        <div class="seller-option-icon"><i class="fas fa-code"></i></div>
+        <div class="seller-option-title">AuraFlex</div>
+        <div class="seller-option-desc">
+          مطور ومبرمج احترافي. متخصص في تقديم الخدمات التقنية المميزة.
+        </div>
+        <button class="seller-option-btn" id="chooseSeller2">اختر هذا البائع </button>
+      </div>
+      
+      <div class="seller-option kaneki" id="sellerOption3">
+        <div class="seller-option-icon"><i class="fas fa-headset"></i></div>
+        <div class="seller-option-title">Kaneki</div>
+        <div class="seller-option-desc">
+          ممثل الدعم الفني. يمكنه توفير الخدمة لك.
+        </div>
+        <button class="seller-option-btn" id="chooseSeller3">اختر هذا البائع </button>
+      </div>
+    </div>
+    
+    <a href="#" class="back-btn" id="backToMainFromChoose">العودة إلى الرئيسية</a>
+  </div>
+
+  <script>
+    // Language translations
+    const translations = {
+      ar: {
+        // Header
+        supportBtn: "الدعم الفني",
+        connectBtn: "الاتصال",
+        currentLanguage: "العربية",
+        
+        // Hero section
+        premiumBadge: "★ سوق بريميوم",
+        mainSubtitle: "هذا هو أفضل مكان لتحقيق هدفك، نوفر لك أفضل الخدمات والأدوات الاحترافية بجودة عالية",
+        cryptoText: "نقبل جميع العملات المشفرة بنسبة 100%",
+        
+        // Buttons
+        orderBtn: "اطلب الخدمة",
+        
+        // Footer
+        footerText: "© 2023 Dwayne Flex. جميع الحقوق محفوظة.",
+        contactText: "للتواصل والدعم الفني: @m_0_h_a1 على Telegram",
+        disclaimerText: "نحن لا نتحمل أي مسؤولية عن الاستخدام غير القانوني لأي من خدماتنا",
+        
+        // Support page
+        supportTitle: "الدعم الفني",
+        supportSubtitle: "اختر الشخص المناسب لحل مشكلتك. هؤلاء الأشخاص فقط يمكنهم استلام رسائلك:",
+        supportDesc1: "المسؤول الرئيسي للموقع والمطور. يمكنه حل جميع المشاكل الفنية والتقنية.",
+        supportDesc2: "مطور ومبرمج احترافي. متخصص في حل المشاكل التقنية المعقدة وتطوير الحلول المخصصة.",
+        supportDesc3: "ممثل الدعم الفني. يمكنه مساعدتك في مشاكل الطلبات والاستفسارات العامة.",
+        supportLink1: "التواصل على Telegram",
+        supportLink2: "التواصل على Telegram",
+        supportLink3: "التواصل على Telegram",
+        backBtn: "العودة إلى الرئيسية",
+        
+        // Choose seller page
+        chooseSellerTitle: "اختر البائع ",
+        chooseServiceInfo: "خدمة: ",
+        chooseSellerSubtitle: "اختر الشخص الذي تريد الشراء منه:",
+        chooseSellerBtn: "اختر هذا البائع ",
+        
+        // Audio
+        audioInfo: "♪ موسيقى خلفية ♪"
+      },
+      
+      en: {
+        // Header
+        supportBtn: "Technical Support",
+        connectBtn: "Connect",
+        currentLanguage: "English",
+        
+        // Hero section
+        premiumBadge: "★ Premium Market",
+        mainSubtitle: "This is the best place to achieve your goal, we provide you with the best professional services and tools with high quality",
+        cryptoText: "We accept all cryptocurrencies 100%",
+        
+        // Buttons
+        orderBtn: "Order Service",
+        
+        // Footer
+        footerText: "© 2023 Dwayne Flex. All rights reserved.",
+        contactText: "For contact and technical support: @m_0_h_a1 on Telegram",
+        disclaimerText: "We are not responsible for any illegal use of our services",
+        
+        // Support page
+        supportTitle: "Technical Support",
+        supportSubtitle: "Choose the right person to solve your problem. Only these people can receive your messages:",
+        supportDesc1: "The main administrator of the site and developer. He can solve all technical problems.",
+        supportDesc2: "Professional developer and programmer. Specialized in solving complex technical problems and developing custom solutions.",
+        supportDesc3: "Technical support representative. He can help you with order problems and general inquiries.",
+        supportLink1: "Contact on Telegram",
+        supportLink2: "Contact on Telegram",
+        supportLink3: "Contact on Telegram",
+        backBtn: "Back to Home",
+        
+        // Choose seller page
+        chooseSellerTitle: "Choose Seller ",
+        chooseServiceInfo: "Service: ",
+        chooseSellerSubtitle: "Choose the person you want to buy from:",
+        chooseSellerBtn: "Choose this seller ",
+        
+        // Audio
+        audioInfo: "♪ Background Music ♪"
+      },
+      
+      es: {
+        // Header
+        supportBtn: "Soporte Técnico",
+        connectBtn: "Conectar",
+        currentLanguage: "Español",
+        
+        // Hero section
+        premiumBadge: "★ Mercado Premium",
+        mainSubtitle: "Este es el mejor lugar para lograr su objetivo, le proporcionamos los mejores servicios y herramientas profesionales con alta calidad",
+        cryptoText: "Aceptamos todas las criptomonedas al 100%",
+        
+        // Buttons
+        orderBtn: "Pedir Servicio",
+        
+        // Footer
+        footerText: "© 2023 Dwayne Flex. Todos los derechos reservados.",
+        contactText: "Para contacto y soporte técnico: @m_0_h_a1 en Telegram",
+        disclaimerText: "No somos responsables del uso ilegal de nuestros servicios",
+        
+        // Support page
+        supportTitle: "Soporte Técnico",
+        supportSubtitle: "Elija a la persona adecuada para resolver su problema. Solo estas personas pueden recibir sus mensajes:",
+        supportDesc1: "El administrador principal del sitio y desarrollador. Puede resolver todos los problemas técnicos.",
+        supportDesc2: "Desarrollador y programador profesional. Especializado en resolver problemas técnicos complejos y desarrollar soluciones personalizadas.",
+        supportDesc3: "Representante de soporte técnico. Puede ayudarlo con problemas de pedidos y consultas generales.",
+        supportLink1: "Contactar en Telegram",
+        supportLink2: "Contactar en Telegram",
+        supportLink3: "Contactar en Telegram",
+        backBtn: "Volver al Inicio",
+        
+        // Choose seller page
+        chooseSellerTitle: "Elegir Vendedor ",
+        chooseServiceInfo: "Servicio: ",
+        chooseSellerSubtitle: "Elija la persona de la que desea comprar:",
+        chooseSellerBtn: "Elegir este vendedor ",
+        
+        // Audio
+        audioInfo: "♪ Música de Fondo ♪"
+      }
+    };
+    
+    // Current language
+    let currentLang = 'ar';
+    
+    // Network background animation
+    const canvas = document.getElementById('net');
+    const ctx = canvas.getContext('2d');
+    
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    // Create particles
+    let particles = [];
+    const particleCount = 80;
+    
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.7,
+        vy: (Math.random() - 0.5) * 0.7,
+        size: Math.random() * 2 + 1
+      });
+    }
+    
+    // Animation function
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Update and draw particles
+      for (let p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        // Bounce off edges
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      }
+      
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let distance = dx * dx + dy * dy;
+          
+          if (distance < 10000) {
+            let opacity = 1 - distance / 10000;
+            ctx.strokeStyle = `rgba(0, 200, 255, ${opacity * 0.2})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+        
+        // Draw particle
+        ctx.fillStyle = '#00c8ff';
+        ctx.fillRect(particles[i].x, particles[i].y, particles[i].size, particles[i].size);
+      }
+      
+      requestAnimationFrame(animate);
+    }
+    
+    animate();
+    
+    // DOM Elements
+    const mainPage = document.getElementById('mainPage');
+    const supportPage = document.getElementById('supportPage');
+    const chooseSellerPage = document.getElementById('chooseSellerPage');
+    const supportBtn = document.getElementById('supportBtn');
+    const backToMainFromSupport = document.getElementById('backToMainFromSupport');
+    const backToMainFromChoose = document.getElementById('backToMainFromChoose');
+    const selectedServiceName = document.getElementById('selectedServiceName');
+    const languageBtn = document.getElementById('languageBtn');
+    const languageDropdown = document.getElementById('languageDropdown');
+    const currentLanguageSpan = document.getElementById('currentLanguage');
+    
+    // Audio elements
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const playBtn = document.getElementById('playBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const volumeBtn = document.getElementById('volumeBtn');
+    const audioInfo = document.getElementById('audioInfo');
+    
+    // Set initial volume to low (20%)
+    backgroundMusic.volume = 0.2;
+    
+    // Audio controls
+    playBtn.addEventListener('click', function() {
+      backgroundMusic.play();
+      playBtn.style.display = 'none';
+      pauseBtn.style.display = 'flex';
+    });
+    
+    pauseBtn.addEventListener('click', function() {
+      backgroundMusic.pause();
+      pauseBtn.style.display = 'none';
+      playBtn.style.display = 'flex';
+    });
+    
+    let isMuted = false;
+    volumeBtn.addEventListener('click', function() {
+      if (isMuted) {
+        backgroundMusic.volume = 0.2;
+        volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        isMuted = false;
+      } else {
+        backgroundMusic.volume = 0;
+        volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        isMuted = true;
+      }
+    });
+    
+    // Initialize language
+    function updateLanguage(lang) {
+      currentLang = lang;
+      
+      // Update current language display
+      currentLanguageSpan.textContent = translations[lang].currentLanguage;
+      
+      // Update language button flag
+      const flagElement = languageBtn.querySelector('.language-flag');
+      flagElement.textContent = lang === 'ar' ? '🇸🇦' : lang === 'en' ? '🇺🇸' : '🇪🇸';
+      
+      // Update all translatable elements
+      document.getElementById('supportBtn').textContent = translations[lang].supportBtn;
+      document.getElementById('connectBtn').textContent = translations[lang].connectBtn;
+      document.getElementById('premiumBadge').textContent = translations[lang].premiumBadge;
+      document.getElementById('mainSubtitle').textContent = translations[lang].mainSubtitle;
+      document.getElementById('cryptoText').textContent = translations[lang].cryptoText;
+      document.getElementById('footerText').textContent = translations[lang].footerText;
+      document.getElementById('contactText').textContent = translations[lang].contactText;
+      document.getElementById('disclaimerText').textContent = translations[lang].disclaimerText;
+      document.getElementById('supportTitle').textContent = translations[lang].supportTitle;
+      document.getElementById('supportSubtitle').textContent = translations[lang].supportSubtitle;
+      document.getElementById('supportDesc1').textContent = translations[lang].supportDesc1;
+      document.getElementById('supportDesc2').textContent = translations[lang].supportDesc2;
+      document.getElementById('supportDesc3').textContent = translations[lang].supportDesc3;
+      document.getElementById('supportLink1').textContent = translations[lang].supportLink1;
+      document.getElementById('supportLink2').textContent = translations[lang].supportLink2;
+      document.getElementById('supportLink3').textContent = translations[lang].supportLink3;
+      document.getElementById('backToMainFromSupport').textContent = translations[lang].backBtn;
+      document.getElementById('chooseSellerTitle').textContent = translations[lang].chooseSellerTitle;
+      document.getElementById('chooseServiceInfo').textContent = translations[lang].chooseServiceInfo;
+      document.getElementById('chooseSellerSubtitle').textContent = translations[lang].chooseSellerSubtitle;
+      document.getElementById('chooseSeller1').textContent = translations[lang].chooseSellerBtn;
+      document.getElementById('chooseSeller2').textContent = translations[lang].chooseSellerBtn;
+      document.getElementById('chooseSeller3').textContent = translations[lang].chooseSellerBtn;
+      document.getElementById('backToMainFromChoose').textContent = translations[lang].backBtn;
+      document.getElementById('audioInfo').textContent = translations[lang].audioInfo;
+      
+      // Update all order buttons
+      const orderButtons = document.querySelectorAll('.item-btn');
+      orderButtons.forEach(btn => {
+        btn.textContent = translations[lang].orderBtn;
+      });
+      
+      // Update product titles, descriptions and prices
+      const itemTitles = document.querySelectorAll('.item-title');
+      itemTitles.forEach(title => {
+        const arText = title.getAttribute('data-ar');
+        const enText = title.getAttribute('data-en');
+        const esText = title.getAttribute('data-es');
+        title.textContent = lang === 'ar' ? arText : lang === 'en' ? enText : esText;
+      });
+      
+      const itemDescs = document.querySelectorAll('.item-desc');
+      itemDescs.forEach(desc => {
+        const arText = desc.getAttribute('data-ar');
+        const enText = desc.getAttribute('data-en');
+        const esText = desc.getAttribute('data-es');
+        desc.textContent = lang === 'ar' ? arText : lang === 'en' ? enText : esText;
+      });
+      
+      // Update prices
+      const itemPrices = document.querySelectorAll('.item-price');
+      itemPrices.forEach(price => {
+        const arText = price.getAttribute('data-ar');
+        const enText = price.getAttribute('data-en');
+        const esText = price.getAttribute('data-es');
+        price.textContent = lang === 'ar' ? arText : lang === 'en' ? enText : esText;
+      });
+      
+      // Update custom text
+      const itemCustoms = document.querySelectorAll('.item-custom');
+      itemCustoms.forEach(custom => {
+        const arText = custom.getAttribute('data-ar');
+        const enText = custom.getAttribute('data-en');
+        const esText = custom.getAttribute('data-es');
+        custom.textContent = lang === 'ar' ? arText : lang === 'en' ? enText : esText;
+      });
+      
+      // Update active language option
+      document.querySelectorAll('.language-option').forEach(option => {
+        option.classList.remove('active');
+        if (option.getAttribute('data-lang') === lang) {
+          option.classList.add('active');
+        }
+      });
+      
+      // Update HTML direction based on language
+      if (lang === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+        document.documentElement.setAttribute('lang', 'ar');
+        document.querySelector('.main-title').style.direction = 'ltr';
+      } else if (lang === 'en') {
+        document.documentElement.setAttribute('dir', 'ltr');
+        document.documentElement.setAttribute('lang', 'en');
+        document.querySelector('.main-title').style.direction = 'ltr';
+      } else if (lang === 'es') {
+        document.documentElement.setAttribute('dir', 'ltr');
+        document.documentElement.setAttribute('lang', 'es');
+        document.querySelector('.main-title').style.direction = 'ltr';
+      }
+    }
+    
+    // Language switcher functionality
+    languageBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      languageDropdown.classList.toggle('show');
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!languageDropdown.contains(e.target) && !languageBtn.contains(e.target)) {
+        languageDropdown.classList.remove('show');
+      }
+    });
+    
+    // Language selection
+    document.querySelectorAll('.language-option').forEach(option => {
+      option.addEventListener('click', function() {
+        const lang = this.getAttribute('data-lang');
+        updateLanguage(lang);
+        languageDropdown.classList.remove('show');
+        
+        // Save language preference
+        localStorage.setItem('preferredLanguage', lang);
+      });
+    });
+    
+    // Load saved language preference
+    const savedLang = localStorage.getItem('preferredLanguage') || 'ar';
+    updateLanguage(savedLang);
+    
+    // Support page functionality
+    supportBtn.addEventListener('click', function() {
+      mainPage.style.display = 'none';
+      supportPage.style.display = 'block';
+      chooseSellerPage.style.display = 'none';
+    });
+    
+    // Back buttons functionality
+    backToMainFromSupport.addEventListener('click', function(e) {
+      e.preventDefault();
+      mainPage.style.display = 'block';
+      supportPage.style.display = 'none';
+      chooseSellerPage.style.display = 'none';
+    });
+    
+    backToMainFromChoose.addEventListener('click', function(e) {
+      e.preventDefault();
+      mainPage.style.display = 'block';
+      supportPage.style.display = 'none';
+      chooseSellerPage.style.display = 'none';
+    });
+    
+    // Order functionality - redirect to choose seller page
+    let currentOrderService = '';
+    let currentOrderPrice = '';
+    
+    const orderButtons = document.querySelectorAll('.item-btn');
+    
+    orderButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const service = this.getAttribute('data-service');
+        const price = this.getAttribute('data-price');
+        
+        currentOrderService = service;
+        currentOrderPrice = price || '';
+        
+        // Update the choose seller page with service info
+        let serviceText = service;
+        if (price) {
+          serviceText += ` - ${price}`;
+        }
+        
+        selectedServiceName.textContent = serviceText;
+        
+        // Show choose seller page
+        mainPage.style.display = 'none';
+        supportPage.style.display = 'none';
+        chooseSellerPage.style.display = 'block';
+      });
+    });
+    
+    // Choose seller functionality
+    document.getElementById('chooseSeller1').addEventListener('click', function() {
+      const sellerName = "Dwayne Flex";
+      const telegramURL = "https://t.me/m_0_h_a1";
+      sendOrderToSeller(sellerName, telegramURL);
+    });
+    
+    document.getElementById('chooseSeller2').addEventListener('click', function() {
+      const sellerName = "AuraFlex";
+      const telegramURL = "https://t.me/auraflex11";
+      sendOrderToSeller(sellerName, telegramURL);
+    });
+    
+    document.getElementById('chooseSeller3').addEventListener('click', function() {
+      const sellerName = "Kaneki";
+      const telegramURL = "https://t.me/Gk_cm";
+      sendOrderToSeller(sellerName, telegramURL);
+    });
+    
+    function sendOrderToSeller(sellerName, telegramURL) {
+      // Create Telegram message based on language
+      let message = '';
+      if (currentLang === 'ar') {
+        message = `طلب خدمة جديدة من موقع Dwayne Flex:\n\nالخدمة: ${currentOrderService}${currentOrderPrice ? ` - ${currentOrderPrice}` : ''}\nالتاريخ: ${new Date().toLocaleString('ar-SA')}\nاللغة: العربية\nالبائع المختار: ${sellerName}\n\nيرجى التواصل مع المستخدم لأكمال عملية الشراء.`;
+      } else if (currentLang === 'en') {
+        message = `New service request from Dwayne Flex website:\n\nService: ${currentOrderService}${currentOrderPrice ? ` - ${currentOrderPrice}` : ''}\nDate: ${new Date().toLocaleString('en-US')}\nLanguage: English\nSelected Seller: ${sellerName}\n\nPlease contact the user to complete the purchase.`;
+      } else if (currentLang === 'es') {
+        message = `Nueva solicitud de servicio del sitio web Dwayne Flex:\n\nServicio: ${currentOrderService}${currentOrderPrice ? ` - ${currentOrderPrice}` : ''}\nFecha: ${new Date().toLocaleString('es-ES')}\nIdioma: Español\nVendedor Seleccionado: ${sellerName}\n\nPor favor contacte al usuario para completar la compra.`;
+      }
+      
+      // Encode message for URL
+      const encodedMessage = encodeURIComponent(message);
+      
+      // Create Telegram URL
+      const finalTelegramURL = `${telegramURL}?text=${encodedMessage}`;
+      
+      // Open Telegram in new tab
+      window.open(finalTelegramURL, '_blank');
+      
+      // Show success message
+      alert(currentLang === 'ar' ? 
+        ` تم إرسال طلبك إلى ${sellerName}.\nيرجى الانتظار حتى يتم التواصل معك على Telegram.` :
+        currentLang === 'en' ?
+        ` Your order has been sent to ${sellerName}.\nPlease wait to be contacted on Telegram.` :
+        ` Su pedido ha sido enviado a ${sellerName}.\nPor favor espere a que se comuniquen con usted en Telegram.`
+      );
+      
+      // Return to main page
+      mainPage.style.display = 'block';
+      supportPage.style.display = 'none';
+      chooseSellerPage.style.display = 'none';
+    }
+    
+    // Connect button animation
+    const connectBtn = document.querySelector('.connect-btn');
+    if (connectBtn) {
+      connectBtn.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px)';
+      });
+      
+      connectBtn.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+      });
+    }
+    
+    // Logo correction - make sure it shows as Dwayne Flex
+    const logos = document.querySelectorAll('.logo');
+    logos.forEach(logo => {
+      logo.innerHTML = '<span class="logo-white">Dwayne</span><span class="logo-red">Flex</span>';
+    });
+    
+    // Main title correction
+    const mainTitle = document.querySelector('.main-title');
+    if (mainTitle) {
+      mainTitle.innerHTML = '<span class="logo-white">Dwayne</span><span class="logo-red">Flex</span>';
+    }
+  </script>
+</body>
+</html>
